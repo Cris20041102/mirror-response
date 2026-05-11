@@ -31,6 +31,7 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
         document.getElementById('actionText').innerText = data.action;
         
         document.getElementById('response-area').style.display = 'block';
+        saveEntry(data);
     } catch (error) {
         console.error("Error:", error);
         alert("No se pudo conectar con el servidor.");

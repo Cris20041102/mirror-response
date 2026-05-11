@@ -12,9 +12,10 @@
     <div class="container">
         <h2>Mirror Response</h2>
         <p>¿Qué llevas en tu corazón hoy? Exprésate libremente.</p>
-        
+
         <textarea id="userInput" placeholder="Me siento..."></textarea>
         <button id="sendBtn">Compartir</button>
+        <button id="historyBtn" class="btn-secondary">Ver historial</button>
 
         <div id="response-area" style="display: none;">
             <div class="card" id="validationText"></div>
@@ -24,6 +25,18 @@
         </div>
     </div>
 
+    <div id="history-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Tu viaje emocional</h3>
+                <button id="closeHistoryBtn" class="close-btn">✕</button>
+            </div>
+            <div id="mood-banner" class="mood-banner"></div>
+            <div id="history-list"></div>
+        </div>
+    </div>
+
     <script src="/js/app.js"></script>
+    <script src="/js/history.js"></script>
 </body>
 </html>

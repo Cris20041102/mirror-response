@@ -66,3 +66,178 @@ button:hover { background-color: var(--accent-color); }
     border-radius: 4px;
     margin-bottom: 10px;
 }
+
+/* ── Botón secundario ── */
+.btn-secondary {
+    background: transparent;
+    color: var(--text-color);
+    border: 2px solid var(--accent-color);
+    margin-top: 10px;
+}
+.btn-secondary:hover { background: var(--accent-color); color: white; }
+
+/* ── Modal ── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px 20px;
+    overflow-y: auto;
+}
+
+.modal-box {
+    background: white;
+    border-radius: 16px;
+    padding: 1.8rem;
+    width: 100%;
+    max-width: 580px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+}
+.modal-header h3 { margin: 0; font-size: 1.1rem; letter-spacing: 0.01em; }
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #bbb;
+    width: auto;
+    padding: 4px 10px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+}
+.close-btn:hover { background: #f0f0f0; color: var(--text-color); }
+
+/* ── Mood banner ── */
+.mood-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 1.4rem;
+}
+.mood-banner.improving   { background: linear-gradient(135deg, #fffbe6, #e8f5e9); border-left: 4px solid #D4AF37; }
+.mood-banner.stable-good { background: linear-gradient(135deg, #fffde7, #fff9e6); border-left: 4px solid #D4AF37; }
+.mood-banner.stable      { background: linear-gradient(135deg, #f5f5f0, #edecea); border-left: 4px solid #aaa; }
+.mood-banner.declining   { background: linear-gradient(135deg, #e8f0fe, #e3f2fd); border-left: 4px solid #6495ED; }
+.mood-banner.new         { background: #f7f7f7; border-left: 4px solid #ccc; }
+.banner-icon  { font-size: 2.2rem; flex-shrink: 0; }
+.banner-title { font-weight: 600; font-size: 0.95rem; color: var(--text-color); margin-bottom: 3px; }
+.banner-sub   { font-size: 0.82rem; color: #777; }
+
+/* ── Empathic summary ── */
+.empathic-summary {
+    font-style: italic;
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: #666;
+    padding: 0.8rem 1rem;
+    margin: 0 0 1.4rem 0;
+    border-bottom: 1px dashed #e8e8e8;
+}
+
+/* ── Timeline ── */
+.timeline {
+    position: relative;
+    padding-left: 28px;
+}
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 0;
+    bottom: 0;
+    border-left: 2px dashed #e0e0e0;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.4rem;
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -23px;
+    top: 20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+/* ── Mood card ── */
+.mood-card {
+    border-radius: 18px;
+    padding: 1.2rem 1.4rem;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.mood-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 0.9rem;
+}
+.state-icon { font-size: 1.7rem; flex-shrink: 0; }
+.state-label { font-weight: 600; font-size: 0.88rem; color: var(--text-color); }
+.relative-time { font-size: 0.74rem; color: #999; margin-top: 2px; }
+
+.card-validation {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-color);
+    margin: 0 0 1rem 0;
+}
+
+/* ── Music widget ── */
+.music-widget {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.65);
+    border-radius: 10px;
+    padding: 8px 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(4px);
+}
+.music-disc-icon { font-size: 1.2rem; color: var(--text-color); flex-shrink: 0; }
+.music-title  { font-size: 0.82rem; font-weight: 600; color: var(--text-color); }
+.music-artist { font-size: 0.74rem; color: #888; margin-top: 1px; }
+
+/* ── Empty & reset ── */
+.empty-history {
+    text-align: center;
+    color: #bbb;
+    padding: 2rem 0;
+    font-style: italic;
+}
+
+.reset-link {
+    text-align: center;
+    margin-top: 1.8rem;
+    font-size: 0.76rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+    user-select: none;
+}
+.reset-link:hover { color: #c0392b; }
