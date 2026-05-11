@@ -22,11 +22,14 @@ def get_connection():
 
 def migrate_db():
     conn = get_connection()
-    try:
-        conn.execute('ALTER TABLE mood_entries ADD COLUMN country TEXT DEFAULT "Chile"')
-        conn.commit()
-    except Exception:
-        pass
+    for stmt in [
+        'ALTER TABLE mood_entries ADD COLUMN country TEXT DEFAULT "Chile"',
+    ]:
+        try:
+            conn.execute(stmt)
+            conn.commit()
+        except Exception:
+            pass
     conn.close()
 
 def init_db():
@@ -49,6 +52,16 @@ def init_db():
     count = conn.execute('SELECT COUNT(*) as c FROM missions').fetchone()['c']
     if count == 0:
         conn.executemany('INSERT INTO missions (text, mood_type) VALUES (?, ?)', MISSIONS)
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS legacy_events (
+            id        INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id   TEXT NOT NULL,
+            type      TEXT NOT NULL,
+            latitude  REAL NOT NULL,
+            longitude REAL NOT NULL,
+            timestamp TEXT NOT NULL
+        )
+    ''')
     conn.commit()
     conn.close()
     migrate_db()

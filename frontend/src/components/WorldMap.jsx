@@ -6,7 +6,6 @@ import { geoMercator } from 'd3-geo';
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 const MAP_W = 800;
 const MAP_H = 400;
-
 const PROJ = geoMercator().scale(130).translate([MAP_W / 2, MAP_H / 2 + 30]);
 
 const RESONANCE_PAIRS = [
@@ -20,10 +19,7 @@ const RESONANCE_PAIRS = [
     [[2.35, 48.85],    [151.2, -33.8]],
 ];
 
-function toSVG(coords) {
-    const p = PROJ(coords);
-    return p || [0, 0];
-}
+function toSVG(coords) { return PROJ(coords) || [0, 0]; }
 
 function buildCurve(a, b) {
     const [x1, y1] = toSVG(a);
@@ -39,7 +35,30 @@ function markerColor(avgScore) {
     return '#6495ED';
 }
 
-export default function WorldMap({ stats = [], pulse = 0 }) {
+function typeColor(type) {
+    if (type === 'empatia')  return '#4CAF50';
+    if (type === 'gratitud') return '#D4AF37';
+    return '#6495ED';
+}
+
+function AnimatedCounter({ value }) {
+    return (
+        <AnimatePresence mode="popLayout">
+            <motion.span
+                key={value}
+                initial={{ y: 12, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -12, opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+                style={{ display: 'inline-block' }}
+            >
+                {value}
+            </motion.span>
+        </AnimatePresence>
+    );
+}
+
+export default function WorldMap({ stats = [], pulse = 0, latestEvent = null }) {
     const [lines, setLines] = useState([]);
     const lineId = useRef(0);
 
@@ -53,16 +72,19 @@ export default function WorldMap({ stats = [], pulse = 0 }) {
     }, []);
 
     const allPoints = [
-        { coords: [-70.65, -33.44], count: 1, avg: 0.6, label: 'Chile' },
-        ...stats.map(s => ({ coords: [s.lon, s.lat], count: s.count, avg: s.avg_score, label: s.country }))
+        { coords: [-70.65, -33.44], count: 1, avg: 0.6 },
+        ...stats.map(s => ({ coords: [s.lon, s.lat], count: s.count, avg: s.avg_score }))
     ];
+
+    const total = pulse + allPoints.reduce((s, p) => s + p.count, 0);
 
     return (
         <div className="world-map-wrapper">
             <div className="pulse-bar">
                 <span className="pulse-dot" />
                 <span className="pulse-text">
-                    <strong>{pulse + allPoints.reduce((s, p) => s + p.count, 0)}</strong> momentos de cambio encendidos en el mundo
+                    <strong><AnimatedCounter value={total} /></strong>
+                    {' '}momentos de cambio encendidos en el mundo
                 </span>
             </div>
 
@@ -96,7 +118,7 @@ export default function WorldMap({ stats = [], pulse = 0 }) {
                                 key={id}
                                 d={buildCurve(pair[0], pair[1])}
                                 fill="none"
-                                stroke="rgba(212,175,55,0.55)"
+                                stroke="rgba(212,175,55,0.5)"
                                 strokeWidth={1.2}
                                 strokeLinecap="round"
                                 initial={{ pathLength: 0, opacity: 0.9 }}
@@ -106,17 +128,43 @@ export default function WorldMap({ stats = [], pulse = 0 }) {
                         ))}
                     </AnimatePresence>
 
-                    {/* Legacy markers */}
+                    {/* Base markers */}
                     {allPoints.map((pt, i) => {
                         const r = Math.min(4 + pt.count * 0.8, 14);
                         const color = markerColor(pt.avg);
                         return (
                             <Marker key={i} coordinates={pt.coords}>
-                                <circle r={r} fill={color} opacity={0.85} style={{ filter: `drop-shadow(0 0 ${r}px ${color})` }} />
-                                <circle r={r * 1.8} fill={color} opacity={0.12} />
+                                <circle r={r} fill={color} opacity={0.85}
+                                    style={{ filter: `drop-shadow(0 0 ${r}px ${color})` }} />
+                                <circle r={r * 1.8} fill={color} opacity={0.1} />
                             </Marker>
                         );
                     })}
+
+                    {/* New event marker with pop animation */}
+                    <AnimatePresence>
+                        {latestEvent && (
+                            <Marker key={latestEvent.id} coordinates={[latestEvent.lon, latestEvent.lat]}>
+                                <motion.circle
+                                    r={10}
+                                    fill={typeColor(latestEvent.type)}
+                                    initial={{ scale: 0, opacity: 1 }}
+                                    animate={{ scale: [0, 1.6, 1], opacity: [1, 0.9, 0.95] }}
+                                    transition={{ duration: 0.55, ease: 'easeOut' }}
+                                    style={{ filter: `drop-shadow(0 0 12px ${typeColor(latestEvent.type)})` }}
+                                />
+                                <motion.circle
+                                    r={10}
+                                    fill="none"
+                                    stroke={typeColor(latestEvent.type)}
+                                    strokeWidth={1.5}
+                                    initial={{ scale: 1, opacity: 0.9 }}
+                                    animate={{ scale: 4, opacity: 0 }}
+                                    transition={{ duration: 1.6, repeat: 2, ease: 'easeOut' }}
+                                />
+                            </Marker>
+                        )}
+                    </AnimatePresence>
                 </ComposableMap>
             </div>
 

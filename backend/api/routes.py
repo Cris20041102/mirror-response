@@ -100,6 +100,48 @@ async def get_legacy_pulse():
     conn.close()
     return {"total": total + 94}
 
+class LegacyCompleteRequest(BaseModel):
+    user_id: str
+    type: str
+    latitude: float = -29.96
+    longitude: float = -71.34
+
+@router.post("/legacy/complete")
+async def complete_legacy(request: LegacyCompleteRequest):
+    valid_types = {"empatia", "gratitud", "paciencia"}
+    action_type = request.type if request.type in valid_types else "gratitud"
+    conn = get_connection()
+    conn.execute(
+        'INSERT INTO legacy_events (user_id, type, latitude, longitude, timestamp) VALUES (?, ?, ?, ?, ?)',
+        (request.user_id, action_type, request.latitude, request.longitude, datetime.utcnow().isoformat())
+    )
+    conn.commit()
+    total = conn.execute('SELECT COUNT(*) as c FROM legacy_events').fetchone()['c']
+    conn.close()
+    return {
+        'success': True,
+        'total': total + 94,
+        'lat': request.latitude,
+        'lon': request.longitude,
+        'type': action_type
+    }
+
+@router.get("/legacy/global-stats")
+async def get_global_stats():
+    conn = get_connection()
+    events = conn.execute('''
+        SELECT type, latitude, longitude, timestamp
+        FROM legacy_events
+        ORDER BY timestamp DESC
+        LIMIT 100
+    ''').fetchall()
+    total = conn.execute('SELECT COUNT(*) as c FROM legacy_events').fetchone()['c']
+    conn.close()
+    return {
+        'events': [dict(e) for e in events],
+        'total': total + 94
+    }
+
 @router.get("/mission")
 async def get_mission(score: float = 0.0):
     mood_type = 'positive' if score > 0.1 else ('negative' if score < -0.1 else 'neutral')
