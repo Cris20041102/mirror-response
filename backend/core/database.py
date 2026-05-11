@@ -20,6 +20,15 @@ def get_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+def migrate_db():
+    conn = get_connection()
+    try:
+        conn.execute('ALTER TABLE mood_entries ADD COLUMN country TEXT DEFAULT "Chile"')
+        conn.commit()
+    except Exception:
+        pass
+    conn.close()
+
 def init_db():
     conn = get_connection()
     conn.execute('''
@@ -42,3 +51,4 @@ def init_db():
         conn.executemany('INSERT INTO missions (text, mood_type) VALUES (?, ?)', MISSIONS)
     conn.commit()
     conn.close()
+    migrate_db()

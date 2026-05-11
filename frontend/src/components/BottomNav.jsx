@@ -4,9 +4,9 @@ export default function BottomNav({ active, onChange, lastScore }) {
         lastScore > 0   ? '#D4AF37' : '#6495ED';
 
     const tabs = [
-        { id: 'mirror',    icon: '◎', label: 'Espejo'    },
-        { id: 'history',   icon: '✦', label: 'Historial' },
-        { id: 'resonance', icon: '◉', label: 'Legado'    },
+        { id: 'mirror',    icon: '🪞', label: 'Espejo'    },
+        { id: 'history',   icon: '✦',  label: 'Historial' },
+        { id: 'resonance', icon: '🌍', label: 'Legado'    },
     ];
 
     return (
