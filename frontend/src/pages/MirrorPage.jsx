@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { saveEntry } from '../utils/storage';
 
-const API = 'https://tu-backend.railway.app/api';
+const API = 'https://mirror-response.onrender.com/api';
 
 export default function MirrorPage({ onAnalyzed }) {
     const [text, setText] = useState('');
