@@ -54,7 +54,7 @@ function AnimatedCounter({ value }) {
                               >
                         {value}
                     </motion.span>motion.span>
-              </AnimatePresence>AnimatePresence>
+              </AnimatePresence>
             );
 }
 
@@ -84,10 +84,10 @@ export default function WorldMap({ stats = [], pulse = 0, latestEvent = null }) 
                     <div className="pulse-bar">
                             <span className="pulse-dot" />
                             <span className="pulse-text">
-                                      <strong><AnimatedCounter value={total} /></strong>strong>
+                                      <strong><AnimatedCounter value={total} /></strong>
                                 {' '}momentos de cambio encendidos en el mundo
-                            </span>span>
-                    </div>div>
+                            </span>
+                    </div>
               
                     <div className="world-map-container">
                             <ComposableMap
@@ -110,7 +110,7 @@ export default function WorldMap({ stats = [], pulse = 0, latestEvent = null }) 
                                                                                                   />
                                                                             ))
                                           }
-                                      </Geographies>Geographies>
+                                      </Geographies>
                             
                                 {/* Resonance lines */}
                                       <AnimatePresence>
@@ -127,7 +127,7 @@ export default function WorldMap({ stats = [], pulse = 0, latestEvent = null }) 
                                                                               transition={{ duration: 3.2, ease: 'easeInOut' }}
                                                                             />
                                                         ))}
-                                      </AnimatePresence>AnimatePresence>
+                                      </AnimatePresence>
                             
                                 {/* Real markers from legacy_events */}
                                 {allPoints.map((pt, i) => {
@@ -138,7 +138,7 @@ export default function WorldMap({ stats = [], pulse = 0, latestEvent = null }) 
                                                                                           <circle r={r} fill={color} opacity={0.85}
                                                                                                                 style={{ filter: `drop-shadow(0 0 ${r}px ${color})` }} />
                                                                                           <circle r={r * 1.8} fill={color} opacity={0.1} />
-                                                                          </Marker>Marker>
+                                                                          </Marker>
                                                                         );
                                         })}
                             
@@ -163,17 +163,17 @@ export default function WorldMap({ stats = [], pulse = 0, latestEvent = null }) 
                                                                                                 animate={{ scale: 4, opacity: 0 }}
                                                                                                 transition={{ duration: 1.6, repeat: 2, ease: 'easeOut' }}
                                                                                               />
-                                                          </Marker>Marker>
+                                                          </Marker>
                                                   )}
-                                      </AnimatePresence>AnimatePresence>
-                            </ComposableMap>ComposableMap>
-                    </div>div>
+                                      </AnimatePresence>
+                            </ComposableMap>
+                    </div>
               
                     <div className="map-legend world-legend">
-                            <span style={{ color: '#4CAF50' }}>● Empatía</span>span>
-                            <span style={{ color: '#D4AF37' }}>● Gratitud</span>span>
-                            <span style={{ color: '#6495ED' }}>● Paciencia</span>span>
-                    </div>div>
-              </div>div>
+                            <span style={{ color: '#4CAF50' }}>● Empatía</span>
+                            <span style={{ color: '#D4AF37' }}>● Gratitud</span>
+                            <span style={{ color: '#6495ED' }}>● Paciencia</span>
+                    </div>
+              </div>
             );
 }</AnimatePresence>
