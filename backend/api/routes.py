@@ -125,14 +125,24 @@ async def get_mission(score: float = 0.0):
 
 @router.post("/legacy/complete")
 async def complete_legacy(payload: dict):
+    action_type = payload.get("type", "gratitud")
+    lat = payload.get("latitude", -29.96)
+    lon = payload.get("longitude", -71.34)
     try:
         conn = get_connection()
         conn.execute(
             'INSERT INTO mood_entries (timestamp, polarity_score, city_zone) VALUES (?, ?, ?)',
-            (datetime.utcnow().isoformat(), 0.5, payload.get("type", "gratitud"))
+            (datetime.utcnow().isoformat(), 0.5, action_type)
         )
         conn.commit()
         conn.close()
     except Exception:
         pass
-    return {"status": "ok", "message": "Accion registrada correctamente"}
+    return {
+        "success": True,
+        "status": "ok",
+        "message": "Accion registrada correctamente",
+        "type": action_type,
+        "lat": lat,
+        "lon": lon
+    }
