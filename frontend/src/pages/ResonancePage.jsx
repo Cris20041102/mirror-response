@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+🌍📍🌱import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CoquimboMap from '../components/CoquimboMap';
 import WorldMap from '../components/WorldMap';
@@ -11,6 +11,20 @@ function actionType(score) {
     if (score > 0.3) return 'empatia';
     if (score > 0)   return 'gratitud';
     return 'paciencia';
+}
+
+function getGeolocation() {
+      return new Promise((resolve) => {
+              if (!navigator.geolocation) {
+                        resolve({ latitude: -29.96, longitude: -71.34 });
+                        return;
+              }
+              navigator.geolocation.getCurrentPosition(
+                        (pos) => resolve({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
+                        () => resolve({ latitude: -29.96, longitude: -71.34 }),
+                  { timeout: 5000 }
+                      );
+      });
 }
 
 export default function ResonancePage({ lastScore }) {
@@ -41,6 +55,7 @@ export default function ResonancePage({ lastScore }) {
     const handleComplete = async () => {
         if (completing) return;
         setCompleting(true);
+              const { latitude, longitude } = await getGeolocation();
         try {
             const res = await fetch(`${API}/legacy/complete`, {
                 method: 'POST',
@@ -48,8 +63,8 @@ export default function ResonancePage({ lastScore }) {
                 body: JSON.stringify({
                     user_id: getUserId(),
                     type: actionType(lastScore),
-                    latitude: -29.96,
-                    longitude: -71.34
+                                latitude,
+                                longitude
                 })
             });
             const data = await res.json();
