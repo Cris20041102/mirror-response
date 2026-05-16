@@ -53,7 +53,7 @@ function AnimatedCounter({ value }) {
                                 style={{ display: 'inline-block' }}
                               >
                         {value}
-                    </motion.span>motion.span>
+                    </motion.span>
               </AnimatePresence>
             );
 }
@@ -159,12 +159,12 @@ export default function WorldMap({ stats = [], pulse = 0, latestEvent = null }) 
                                                                                                 fill="none"
                                                                                                 stroke={typeColor(latestEvent.type)}
                                                                                                 strokeWidth={1.5}
-                                                                                                initial={{ scale: 1, opacity: 0.9 }}
+                                                                                       h         initial={{ scale: 1, opacity: 0.9 }}
                                                                                                 animate={{ scale: 4, opacity: 0 }}
                                                                                                 transition={{ duration: 1.6, repeat: 2, ease: 'easeOut' }}
                                                                                               />
                                                           </Marker>
-                                                  )}
+                                                  ))
                                       </AnimatePresence>
                             </ComposableMap>
                     </div>
