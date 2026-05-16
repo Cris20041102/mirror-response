@@ -164,7 +164,7 @@ export default function WorldMap({ stats = [], pulse = 0, latestEvent = null }) 
                                                                                                 transition={{ duration: 1.6, repeat: 2, ease: 'easeOut' }}
                                                                                               />
                                                           </Marker>
-                                                  ))
+                                                  )}
                                       </AnimatePresence>
                             </ComposableMap>
                     </div>
