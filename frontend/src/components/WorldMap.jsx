@@ -176,4 +176,4 @@ export default function WorldMap({ stats = [], pulse = 0, latestEvent = null }) 
                     </div>
               </div>
             );
-}</AnimatePresence>
+}
