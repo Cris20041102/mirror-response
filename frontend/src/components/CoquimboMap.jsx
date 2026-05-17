@@ -2,18 +2,18 @@ import { useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
 import { getZoneColor, getZoneLabel } from '../utils/moodUtils';
 
-const GEO_URL = 'https://raw.githubusercontent.com/roberveral/chile-geojson/main/comunas.geojson';
+const GEO_URL = 'https://raw.githubusercontent.com/caracena/chile-geojson/master/4.geojson';
 
 const ZONE_COMUNAS = {
   'La Serena':      ['La Serena'],
   'Coquimbo':       ['Coquimbo'],
-  'Valle de Elqui': ['Vicuna', 'Andacollo', 'La Higuera', 'Paihuano', 'Vicuna', 'Paiguano'],
+  'Valle de Elqui': ['Vicuna', 'Andacollo', 'La Higuera', 'Paihuano'],
 };
 
 const ZONE_MARKERS = {
-  'La Serena':      { lon: -71.25, lat: -29.9 },
-  'Coquimbo':       { lon: -71.35, lat: -30.0 },
-  'Valle de Elqui': { lon: -70.35, lat: -30.05 },
+  'La Serena':      { lon: -71.28, lat: -29.9 },
+  'Coquimbo':       { lon: -71.35, lat: -30.05 },
+  'Valle de Elqui': { lon: -70.35, lat: -30.1 },
 };
 
 function getZoneForComuna(name) {
@@ -22,7 +22,7 @@ function getZoneForComuna(name) {
   for (const [zone, comunas] of Object.entries(ZONE_COMUNAS)) {
     for (const c of comunas) {
       const cn = c.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      if (n.toLowerCase().includes(cn.toLowerCase())) return zone;
+      if (n.toLowerCase() === cn.toLowerCase()) return zone;
     }
   }
   return null;
@@ -60,32 +60,27 @@ export default function CoquimboMap({ communityData }) {
       >
         <Geographies geography={GEO_URL}>
           {({ geographies }) =>
-            geographies
-              .filter(geo => {
-                const region = geo.properties?.region_id ?? geo.properties?.Region ?? '';
-                return String(region) === '4' || String(region).includes('Coquimbo');
-              })
-              .map(geo => {
-                const name = geo.properties?.comuna ?? geo.properties?.NOM_COM ?? geo.properties?.name ?? '';
-                const zone = getZoneForComuna(name);
-                const color = zone ? zoneColor[zone] : '#c8d8c8';
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    fill={color}
-                    fillOpacity={zone ? 0.75 : 0.35}
-                    stroke="#fff"
-                    strokeWidth={0.6}
-                    style={{
-                      default: { outline: 'none', cursor: zone ? 'pointer' : 'default' },
-                      hover:   { outline: 'none', fillOpacity: zone ? 0.95 : 0.45 },
-                      pressed: { outline: 'none' },
-                    }}
-                    onClick={() => zone && handleClick(zone)}
-                  />
-                );
-              })
+            geographies.map(geo => {
+              const name = geo.properties?.Comuna ?? '';
+              const zone = getZoneForComuna(name);
+              const color = zone ? zoneColor[zone] : '#c8d8c8';
+              return (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill={color}
+                  fillOpacity={zone ? 0.75 : 0.35}
+                  stroke="#fff"
+                  strokeWidth={0.6}
+                  style={{
+                    default: { outline: 'none', cursor: zone ? 'pointer' : 'default' },
+                    hover:   { outline: 'none', fillOpacity: zone ? 0.95 : 0.45 },
+                    pressed: { outline: 'none' },
+                  }}
+                  onClick={() => zone && handleClick(zone)}
+                />
+              );
+            })
           }
         </Geographies>
 
